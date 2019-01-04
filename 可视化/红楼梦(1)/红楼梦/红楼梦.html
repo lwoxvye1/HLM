@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+   <head>
+       <meta charset="utf-8">
+   </head>
+   <body style="height: 100%; margin: 0">
+       <div id="container" style="height: 100%"></div>
+       <script type="text/javascript" src="echarts.min.js"></script>
+       <script type="text/javascript" src="http://echarts.baidu.com/gallery/vendors/echarts-gl/echarts-gl.min.js"></script>
+       <!-- <script type="text/javascript" src="echarts-gl.min.js"></script> -->
+       <script type="text/javascript" src="jquery-3.3.1.min.js"></script>
+       <script type="text/javascript" src="dat.gui.js"></script>
+       <script type="text/javascript">
+var FizzyText = function() {
+  this.category = 'result_0';
+};
+
+
+  var text = new FizzyText();
+  var gui = new dat.GUI();
+  var controller = gui.add(text, 'category', ['result_0','result_1','result_2','result_3','result_4','result_5','result_6','result_7','result_8','result_9'] );
+  // gui.add(text, 'explode');
+// console.log(gui.bottom)
+console.log(controller.initialValue)
+controller.onChange(function(value){
+	$.getJSON('3dscatter4.json', function (data) {
+	    option.series[0].data=data[value]['a_cat'];
+	    option.series[1].data=data[value]['b_cat'];
+	    myChart.setOption(option);})
+})
+var dom = document.getElementById("container");
+var myChart = echarts.init(dom);
+var app = {};
+    // var max = getMaxOnExtent(data);
+option = {
+    	backgroundColor:'#333',
+    	title:{
+    		text:'魏哥小跟班组',
+    		left:'20%',
+    		top:'10%',
+    		textStyle:{
+    			color:'#fff',
+    			fontSize:20
+    		}
+    	},
+    	legend:{
+    		data:['A类','B类'],
+    		textStyle:{
+    			color:'#fff'
+    		}
+    	},
+        tooltip: {
+        	formatter:function(val){
+        		// console.log(val)
+        		return val.seriesName+':'+val.value[3]
+        	}
+        },
+
+        xAxis3D: {
+            name: '开头结尾',
+            type: 'value',
+            max:19,
+            min:3
+        },
+        yAxis3D: {
+            name: '话题转换',
+            type: 'value',
+            min:8,
+            max:32
+        },
+        zAxis3D: {
+            name: '前80回后40回',
+            type: 'value',
+            max:1.5,
+            min:-1.5
+        },
+        grid3D: {
+            axisLine: {
+                lineStyle: {
+                    color: '#fff'
+                }
+            },
+            axisPointer: {
+                lineStyle: {
+                    color: '#ffbd67'
+                }
+            },
+            viewControl: {
+                // autoRotate: true
+                // projection: 'orthographic'
+            }
+        },
+        series: [{
+        	name:'A类',
+            type: 'scatter3D',
+            data: [],
+            symbolSize: 12,
+            // symbol: 'triangle',
+            itemStyle: {
+                borderWidth: 1,
+                borderColor: 'rgba(255,255,255,0.8)',
+                color:'yellow'
+            },
+            emphasis: {
+                itemStyle: {
+                    color: '#fff'
+                }
+            }
+        },{
+        	name:'B类',
+            type: 'scatter3D',
+            data: [],
+            symbolSize: 12,
+            // symbol: 'triangle',
+            itemStyle: {
+                borderWidth: 1,
+                borderColor: 'rgba(255,255,255,0.8)',
+                color:'blue'
+            },
+            emphasis: {
+                itemStyle: {
+                    color: '#fff'
+                }
+            }
+        }],
+        animationDurationUpdate: 1000,
+        animationEasingUpdate: 'quinticInOut'
+    };
+// });;
+
+// myChart.setOption(option,true);
+	$.getJSON('3dscatter4.json', function (data) {
+	    option.series[0].data=data['result_0']['a_cat'];
+	    option.series[1].data=data['result_0']['b_cat'];
+	    myChart.setOption(option,true);})
+
+       </script>
+   </body>
+</html>
